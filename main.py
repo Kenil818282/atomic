@@ -412,7 +412,7 @@ def main():
         "content": "",
         "embeds": embeds,
         "username": "Atomic",
-        "avatar_url": "https://cdn.discordapp.com/attachments/921559892408549426/942042298420723712/9e091f0c777850f70faba8e9a03dba9e.jpg"
+        "avatar_url": "https://media.discordapp.net/attachments/939916207946072064/943178593939357796/Atomic_Logo.png?width=367&height=367"
     }
     try:
         
